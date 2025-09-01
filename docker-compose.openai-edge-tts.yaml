@@ -1,15 +1,17 @@
 #ddev-generated
 services:
   openai-edge-tts:
+    image: ${OPENAI_EDGE_TTS_DOCKER_IMAGE:-travisvn/openai-edge-tts:latest}
     container_name: ddev-${DDEV_SITENAME}-openai-edge-tts
-    image: ${OPENAI_EDGE_TTS_DOCKER_IMAGE:-ddev/ddev-utilities:latest}
-    command: tail -f /dev/null
+    volumes:
+      - .:/mnt/ddev_config
+      - ddev-global-cache:/mnt/ddev-global-cache
+    environment:
+      - VIRTUAL_HOST=$DDEV_HOSTNAME
+      - HTTP_EXPOSE=5049:5050
+      - HTTPS_EXPOSE=5050:5050
     restart: "no"
     # These labels ensure this service is discoverable by DDEV.
     labels:
       com.ddev.site-name: ${DDEV_SITENAME}
       com.ddev.approot: ${DDEV_APPROOT}
-
-    volumes:
-      - ".:/mnt/ddev_config"
-      - "ddev-global-cache:/mnt/ddev-global-cache"
