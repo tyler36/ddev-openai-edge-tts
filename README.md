@@ -123,6 +123,26 @@ All customization options (use with caution):
 | ------------------------------ | -------------------------------- | ---------------------------- |
 | `OPENAI_EDGE_TTS_DOCKER_IMAGE` | `--openai-edge-tts-docker-image` | `ddev/ddev-utilities:latest` |
 
+### Ports
+
+To change the HTTP/S ports exposed to the host system:
+
+- Use DDEV dotenv command
+
+    ```shell
+    ddev dotenv set .ddev/.env --tts-http-port="${TTS_HTTP_PORT}"   # HTTP
+    ddev dotenv set .ddev/.env --tts-https-port="${TTS_HTTPS_PORT}" # HTTPS
+    ```
+
+- or, update the `.ddev/.env` file directly.
+
+    ```env
+    TTS_HTTP_PORT=5010
+    TTS_HTTPS_PORT=5011
+    ```
+
+Restart DDEV to apply the changes.
+
 ## Credits
 
 **Contributed and maintained by [@tyler36](https://github.com/tyler36)**
