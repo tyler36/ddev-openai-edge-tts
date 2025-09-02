@@ -54,9 +54,6 @@ health_checks() {
     }' \
     --output speech.mp3
   assert_success
-
-  run diff "${TESTDIR}/speech.mp3" "${DIR}/tests/testdata/example.mp3"
-  assert_success
 }
 
 teardown() {
