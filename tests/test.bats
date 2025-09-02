@@ -80,6 +80,49 @@ teardown() {
   health_checks
 }
 
+@test "API ports are configurable" {
+  set -eu -o pipefail
+
+  export TTS_HTTP_PORT=5010
+  export TTS_HTTPS_PORT=5011
+
+  set -eu -o pipefail
+  echo "# ddev add-on get ${DIR} with project ${PROJNAME} in $(pwd)" >&3
+  run ddev add-on get "${DIR}"
+  assert_success
+
+  ddev dotenv set .ddev/.env --tts-http-port="${TTS_HTTP_PORT}"
+  ddev dotenv set .ddev/.env --tts-https-port="${TTS_HTTPS_PORT}"
+  run ddev restart -y
+  assert_success
+
+  # Test HTTP port
+  curl -X POST "https://${PROJNAME}.ddev.site:${TTS_HTTP_PORT}/v1/audio/speech" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer your_api_key_here" \
+    -d '{
+      "input": "Open the pod bay doors, HAL.",
+      "voice": "echo",
+      "response_format": "mp3",
+      "speed": 1.0
+    }' \
+    --output http.mp3
+  assert_success
+
+  # Test HTTPS port
+  curl -X POST "https://${PROJNAME}.ddev.site:${TTS_HTTPS_PORT}/v1/audio/speech" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer your_api_key_here" \
+    -d '{
+      "input": "Open the pod bay doors, HAL.",
+      "voice": "echo",
+      "response_format": "mp3",
+      "speed": 1.0
+    }' \
+    --output https.mp3
+  assert_success
+}
+
 # bats test_tags=release
 @test "install from release" {
   set -eu -o pipefail
