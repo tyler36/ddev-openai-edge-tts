@@ -48,6 +48,8 @@ OpenAI-Compatible Edge-TTS API tries to maintain compatibility with the OpenAI `
 
 @see [OpenAI-Compatible Edge-TTS API](https://github.com/travisvn/openai-edge-tts) for all available options.
 
+For non-English languages, set the voice to an appropriate language list on [Voice Samples](https://tts.travisvn.com/).
+
 ### Curl
 
 Use `curl` to make request to the endpoint.
